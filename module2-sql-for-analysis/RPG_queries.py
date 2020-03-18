@@ -1,6 +1,8 @@
 import psycopg2 as psy2 
 import os
 from dotenv import load_dotenv
+import json
+from psycopg2.extras import execute_values
 
 load_dotenv()
 
@@ -18,5 +20,21 @@ print('Cursor:', cursor)
 cursor.execute("SELECT * from test_table;")
 
 result = cursor.fetchone()
-print("RESULT:", result)
+print("Result:", result)
 
+# add multiple rows
+my_dict = {'a': 1, 'b': ['dog', 'cat', 42], 'c': 'true'}
+
+insertion_query = 'INSERT INTO test_table (name, data) VALUES %s'
+execute_values(cursor, insertion_query, [
+    ('A row', 'null'),
+    ('Another row, with JSON', json.dumps(my_dict)),
+    ('Third row', '3')
+])
+
+cursor.execute("SELECT * FROM test_table;")
+result = cursor.fetchall()
+print('Result:', result)
+
+# save transaction
+connection.commit()
