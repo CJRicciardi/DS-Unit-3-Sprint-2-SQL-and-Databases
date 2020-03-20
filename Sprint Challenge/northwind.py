@@ -21,7 +21,7 @@ expensive_query = """
     """
 result = cursor.execute(expensive_query).fetchall()
 pretty_result = pd.DataFrame(result, columns=["Item", "Price"])
-print(f"\nThe ten most expensive items are:", pretty_result)
+print(f"\nThe ten most expensive items are:\n", pretty_result)
 
 # query, execution and answer for average age at hire
 hire_age = """
